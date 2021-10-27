@@ -69,18 +69,17 @@
 
     <br><br>
 
-    <img style="width: 60%;" src="./resources/icml_ffig.svg" alt="Teaser figure."/>
+    <img style="width: 60%;" src="./resources/causil_ffig.svg" alt="Teaser figure."/>
     <br>
     <p style="width: 80%;">
       <br>
-We develop algorithms for imitation learning from policy data that was corrupted by unobserved confounders. Sources of such confounding include \textit{(a)} persistent perturbations to actions or \textit{(b)} the expert responding to a part of the state that the learner does not have access to. When a confounder affects multiple timesteps of recorded data, it can manifest as spurious correlations between states and actions that a learner might latch on to, leading to poor policy performance. To break up these spurious correlations, we apply modern variants of the classical \textit{instrumental variable regression} (IVR) technique, enabling us to recover the causally correct underlying policy \textit{without} requiring access to an interactive expert. In particular, we present two techniques, one of a generative-modeling flavor (<code>DoubIL</code>) that can utilize access to a simulator and one of a game-theoretic flavor (<code>ResiduIL</code>) that can be run entirely offline. We then prove performance bounds for both algorithms, discuss how they scale with the strength of the instrument, and discuss situations where effective imitation is not possible. We find both of our algorithms compare favorably to behavioral cloning on simulated rocket landing task.    </p>
-
+  We focus in imitation learning in the presence of temporally correlated perturbations (exogenous noise, <i>(a)</i>) or not having access to the full state (endogenous noise, <i>(b)<i>). We formalize both in a graphical model <i>(c)</i> that allows us to leverage a technique known as <i>instrumental variable regression</i> to find a policy that isn't corrupted by spurious correlations introduced by the confounder.
     <br>
     <hr>
 
     <h1>Abstract</h1>
     <p style="width: 80%;">
-        We provide a unifying view of a large family of previous imitation learning algorithms through the lens of <i>moment matching</i>. At its core, our classification scheme is based on whether the learner attempts to match (1) <i>reward</i> or (2) <i>action-value</i> moments of the expert's behavior, with each option leading to differing algorithmic approaches. By considering adversarially chosen divergences between learner and expert behavior, we are able to derive bounds on policy performance that apply for all algorithms in each of these classes, the first to our knowledge. We also introduce the notion of <i>moment recoverability</i>, implicit in many previous analyses of imitation learning, which allows us to cleanly delineate how well each algorithmic family is able to mitigate compounding errors. We derive three novel algorithm templates (<code>AdVIL</code>, <code>AdRIL</code>, and <code>DAeQuIL</code>) with strong guarantees, simple implementation, and competitive empirical performance.
+We develop algorithms for imitation learning from policy data that was corrupted by unobserved confounders. Sources of such confounding include <i>(a)</i> persistent perturbations to actions or <i>(b)</i> the expert responding to a part of the state that the learner does not have access to. When a confounder affects multiple timesteps of recorded data, it can manifest as spurious correlations between states and actions that a learner might latch on to, leading to poor policy performance. To break up these spurious correlations, we apply modern variants of the classical <i>instrumental variable regression</i> (IVR) technique, enabling us to recover the causally correct underlying policy \textit{without} requiring access to an interactive expert. In particular, we present two techniques, one of a generative-modeling flavor (<code>DoubIL</code>) that can utilize access to a simulator and one of a game-theoretic flavor (<code>ResiduIL</code>) that can be run entirely offline. We then prove performance bounds for both algorithms, discuss how they scale with the strength of the instrument, and discuss situations where effective imitation is not possible. We find both of our algorithms compare favorably to behavioral cloning on simulated rocket landing task.    </p>
     </p>
 
     <br>
@@ -98,79 +97,7 @@ We develop algorithms for imitation learning from policy data that was corrupted
                 allowfullscreen></iframe>
     </div>
     <br>
-    <hr>
 
-    <h1>Key Insights</h1>
-    <!--
-    <img style="width: 80%;" src="./resources/method.jpg"
-         alt="Method overview figure"/>
-    -->
-    <h2>1. Moment Taxonomy</h2>
-    <p style="width: 80%;">As introduced in the above figure, we formalize imitation learning as matching (a) <i>reward</i>, (b) <i>off-policy Q-value</i>, or (c) <i>on-policy Q-value</i> moments. These have different requirements on the learner and expert, as well as leading to different bounds:</p>
-<table style="margin: auto;">
-<thead>
-  <tr class="border_bottom">
-    <th>Moment Matched</th>
-    <th>Env. Access</th>
-    <th>$\pi_E$ Queries</th>
-    <th>Upper Bound</th>
-    <th>Lower Bound</th>
-    <th>Sample Algorithms</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>Reward</td>
-    <td>✓</td>
-    <td>✗</td>
-    <td>$J(\pi_E) - J(\pi) \leq O(\epsilon T)$</td>
-    <td>$J(\pi_E) - J(\pi) \geq \Omega(\epsilon T)$</td>
-<td>GAIL, MaxEnt IRL, SQIL</td>
-  </tr>
-  <tr>
-    <td>Off-Policy Q</td>
-    <td>✗</td>
-    <td>✗</td>
-    <td>$J(\pi_E) - J(\pi) \leq O(\epsilon T^2)$</td>
-    <td>$J(\pi_E) - J(\pi) \geq \Omega(\epsilon T^2)$</td>
-	  <td>ValueDICE</td>
-  </tr>
-  <tr>
-    <td>On-Policy Q</td>
-    <td>✓</td>
-    <td>✓</td>
-    <td>$J(\pi_E) - J(\pi) \leq O(\epsilon HT)$</td>
-    <td>$J(\pi_E) - J(\pi) \geq \Omega(\epsilon T)$</td>
-	  <td>DAgger, GPS, iFAIL</td>
-  </tr>
-</tbody>
-</table>
-<br>
-<p style="width: 80%">At first glance, the reward-moment bounds might seem too good to be true (they don't require an interactive expert yet seem to be tighter than the on-policy Q-value bounds). However, this comes at the cost of a potentially exponentially more complex optimization problem to solve. When ordered by computational complexity, tighter bounds correspond to more challenging optimizations. Importantly, these bounds apply for <i>all</i> algorithms in each of these classes.</p>
-    
-<h2>2. Recoverability</h2>
-<p style="width: 80%;"> A natural question at this point might be what $H$ means in the previous table. $H$ is the <i>recoverability constant</i> of a problem and is a property of both the expert's policy and the set of moments considered. Intuitively, it tells us how many timesteps it takes the expert to correct a mistake. $H$ quantifies the difficulty of the problem and tells us how much on-policy corrections from the expert can help -- for $H$ that is $O(T)$, the expert can help very little, while for $H$ that is $O(1)$, on-policy corrections can help a lot.</p>
-<h2>3. Game-Theoretic Reductions</h2>
-    <p style="width: 80%;">So, how does one actually match moments? We formulate moment-matching as a <i>zero-sum game</i> and compute <i>equilibrium strategies</i> for the policy player against adversarially chosen divergences that attempts to distinguish between learner and expert samples. We identify two flavors of such algorithms:
-<ul style="width: 80%; margin: auto; text-align: left; list-style-type: none;">
-  <li><b>Primal</b>: Policy player follows a slow and steady <i>no-regret</i> strategy while the discriminative player best-responds to the last policy player iterate.</li>
-  <li><b>Dual</b>: Discriminative player follows a <i>no-regret</i> strategy while the policy player best-responds. </li>
-</ul>
-</p>
-<p style="width: 80%;">
-As we show in our paper, access to oracles that can perform no-regret and best-response updates allows one to match each of the three types of moments up to any $\epsilon > 0$ efficiently. One can then consult the above table to arrive at policy performance bounds depending on the class of moment that was matched. Thus, our framework gives us a family of reduction-based methods for <i>closing the imitation gap</i>.
-    </p>
-<h2>4. Practical Procedures</h2>
-    <p style="width: 80%;">One of the advantage of a reductions approach is that it allows us to plug in any no-regret-style procedure and have the performance guarantees still hold. We introduce three novel algorithms which can be seen as realizations of the above no-regret reduction:</p>
-    <ul style="width: 80%; margin: auto; text-align: left; list-style-type: none;">
-  <li><code>AdRIL</code>: A reward-moment-matching algorithm where the replay buffer can be seen as the discriminator, assigning dynamically updating rewards to samples that the learner uses to compute updates via maximum entropy RL.</li>
-      <li><code>AdVIL</code>: An off-$Q$ algorithm with the learner and discriminator taking the form of an IPM-GAN.</li>
-	    <li><code>DAeQuIL</code>: An on-$Q$ algorithm that can be seen as an extension of DAgger where, at each round, the discriminator adversarially choses a loss function, and the learner minimizes the sum of losses over the aggregated data.</li>
-</ul> <br>
-<p style="width: 80%;">We implemented all three of these algorithms in PyTorch and tested them in the PyBullet suite. <code>AdVIL</code> is competitive with the state-of-the-art, while <code>AdRIL</code> and <code>DAeQuIL</code> are able to significantly out-perform baselines on some tasks. We release our code at the link below with the hope that the community will be able to build on and refine our implementations.</p>
-   <a href="https://github.com/gkswamy98/causal_il"><i class="fa fa-github" style="font-size: 50px; padding-bottom: 10px"></i><br>[Code]</a>
-
-    <br>
     <hr>
 
     <h1>Paper</h1>
