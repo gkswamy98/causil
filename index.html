@@ -1,0 +1,212 @@
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript">google.load("jquery", "1.3.2");</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        inlineMath: [['$','$']]
+      }
+    });
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script> 
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./resources/style.css" media="screen"/>
+
+<html lang="en">
+<head>
+	<title>Of Moments and Matching: A Game-Theoretic Framework for Closing the Imitation Gap</title>
+    <!-- Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/
+        if you update and want to force Facebook to re-scrape. -->
+	<meta property="og:title" content="Of Moments and Matching: A Game-Theoretic Framework for Closing the Imitation Gap" />
+	<meta property="og:description" content="When attempting to mimic an expert, a learner could learn by (a) rolling out their policy and comparing generated trajectories to expert trajectories, (b) producing actions on expert states and attempting to match action-conditionals, or (c) performing rollouts and attempting to match corrections provided by a queryable expert. We provide, for each of these settings, bounds for how well the learner can do, reduction-based algorithms for efficiently finding strong policies, and simple yet competitive practical instantiations that can scale to high-dimensional tasks." />
+    <!-- Twitter automatically scrapes this. Go to https://cards-dev.twitter.com/validator?
+        if you update and want to force Twitter to re-scrape. -->
+    <meta property="twitter:card"          content="When attempting to mimic an expert, a learner could learn by (a) rolling out their policy and comparing generated trajectories to expert trajectories, (b) producing actions on expert states and attempting to match action-conditionals, or (c) performing rollouts and attempting to match corrections provided by a queryable expert. We provide, for each of these settings, bounds for how well the learner can do, reduction-based algorithms for efficiently finding strong policies, and simple yet competitive practical instantiations that can scale to high-dimensional tasks." />
+    <meta property="twitter:title"         content="Of Moments and Matching: A Game-Theoretic Framework for Closing the Imitation Gap" />
+    <meta property="twitter:description"   content="When attempting to mimic an expert, a learner could learn by (a) rolling out their policy and comparing generated trajectories to expert trajectories, (b) producing actions on expert states and attempting to match action-conditionals, or (c) performing rollouts and attempting to match corrections provided by a queryable expert. We provide, for each of these settings, bounds for how well the learner can do, reduction-based algorithms for efficiently finding strong policies, and simple yet competitive practical instantiations that can scale to high-dimensional tasks." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+<div class="container">
+    <div class="title">
+        Of Moments and Matching: <br> A Game-Theoretic Framework for Closing the Imitation Gap
+    </div>
+
+    <div class="venue">
+        Published at ICML 2021
+    </div>
+
+    <br><br>
+
+    <div class="author">
+        <a href="https://gokul.dev/">Gokul Swamy</a><sup>1</sup>
+    </div>
+    <div class="author">
+        <a href="http://www.sanjibanchoudhury.com/">Sanjiban Choudhury</a><sup>2</sup>
+    </div>
+    <div class="author">
+        <a href="https://www.ri.cmu.edu/ri-faculty/j-andrew-drew-bagnell/">Drew Bagnell</a><sup>1, 2</sup>
+    </div>
+    <div class="author">
+        <a href="https://zstevenwu.com/">Steven Wu</a><sup>3</sup>
+    </div>
+
+    <br><br>
+
+    <div class="affiliation"><sup>1&nbsp;</sup>Robotics Institute, CMU</div>
+    <div class="affiliation"><sup>2&nbsp;</sup>Aurora Innovation</div>
+    <div class="affiliation"><sup>3&nbsp;</sup>ISR, CMU</div>
+
+    <br><br>
+
+    <div class="links"><a href="https://arxiv.org/abs/2103.03236"><i class="fa fa-file-text", style="font-size: 50px; padding-bottom: 10px"></i><br>[Paper]</a></div>
+    <div class="links"><a href="https://www.youtube.com/playlist?list=PL51kEpt5uSsbZSaGyUMsLsOoFP8-hyx0R"><i class="fa fa-play-circle" style="font-size: 50px; padding-bottom: 10px"></i><br>[Videos]</a></div>
+    <div class="links"><a href="https://github.com/gkswamy98/pillbox"><i class="fa fa-github" style="font-size: 50px; padding-bottom: 10px"></i><br>[Code]</a></div>
+
+    <br><br>
+
+    <img style="width: 60%;" src="./resources/icml_ffig.svg" alt="Teaser figure."/>
+    <br>
+    <p style="width: 80%;">
+      <br>
+      When attempting to mimic an expert, a learner could learn by (a) rolling out their policy and comparing generated trajectories to expert trajectories, (b) producing actions on expert states and attempting to match action-conditionals, or (c) performing rollouts and attempting to match corrections provided by a queryable expert. We provide, for each of these settings, <b>bounds</b> for how well the learner can do, <b>reduction-based algorithms</b> for efficiently finding strong policies, and simple yet competitive <b>practical instantiations</b> that can scale to high-dimensional tasks.
+    </p>
+
+    <br>
+    <hr>
+
+    <h1>Abstract</h1>
+    <p style="width: 80%;">
+        We provide a unifying view of a large family of previous imitation learning algorithms through the lens of <i>moment matching</i>. At its core, our classification scheme is based on whether the learner attempts to match (1) <i>reward</i> or (2) <i>action-value</i> moments of the expert's behavior, with each option leading to differing algorithmic approaches. By considering adversarially chosen divergences between learner and expert behavior, we are able to derive bounds on policy performance that apply for all algorithms in each of these classes, the first to our knowledge. We also introduce the notion of <i>moment recoverability</i>, implicit in many previous analyses of imitation learning, which allows us to cleanly delineate how well each algorithmic family is able to mitigate compounding errors. We derive three novel algorithm templates (<code>AdVIL</code>, <code>AdRIL</code>, and <code>DAeQuIL</code>) with strong guarantees, simple implementation, and competitive empirical performance.
+    </p>
+
+    <br>
+    <hr>
+
+    <h1>Videos</h1>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/srhPFS77oSs" frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/zczKcpzwRuc" frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+    <br>
+    <hr>
+
+    <h1>Key Insights</h1>
+    <!--
+    <img style="width: 80%;" src="./resources/method.jpg"
+         alt="Method overview figure"/>
+    -->
+    <h2>1. Moment Taxonomy</h2>
+    <p style="width: 80%;">As introduced in the above figure, we formalize imitation learning as matching (a) <i>reward</i>, (b) <i>off-policy Q-value</i>, or (c) <i>on-policy Q-value</i> moments. These have different requirements on the learner and expert, as well as leading to different bounds:</p>
+<table style="margin: auto;">
+<thead>
+  <tr class="border_bottom">
+    <th>Moment Matched</th>
+    <th>Env. Access</th>
+    <th>$\pi_E$ Queries</th>
+    <th>Upper Bound</th>
+    <th>Lower Bound</th>
+    <th>Sample Algorithms</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Reward</td>
+    <td>✓</td>
+    <td>✗</td>
+    <td>$J(\pi_E) - J(\pi) \leq O(\epsilon T)$</td>
+    <td>$J(\pi_E) - J(\pi) \geq \Omega(\epsilon T)$</td>
+<td>GAIL, MaxEnt IRL, SQIL</td>
+  </tr>
+  <tr>
+    <td>Off-Policy Q</td>
+    <td>✗</td>
+    <td>✗</td>
+    <td>$J(\pi_E) - J(\pi) \leq O(\epsilon T^2)$</td>
+    <td>$J(\pi_E) - J(\pi) \geq \Omega(\epsilon T^2)$</td>
+	  <td>ValueDICE</td>
+  </tr>
+  <tr>
+    <td>On-Policy Q</td>
+    <td>✓</td>
+    <td>✓</td>
+    <td>$J(\pi_E) - J(\pi) \leq O(\epsilon HT)$</td>
+    <td>$J(\pi_E) - J(\pi) \geq \Omega(\epsilon T)$</td>
+	  <td>DAgger, GPS, iFAIL</td>
+  </tr>
+</tbody>
+</table>
+<br>
+<p style="width: 80%">At first glance, the reward-moment bounds might seem too good to be true (they don't require an interactive expert yet seem to be tighter than the on-policy Q-value bounds). However, this comes at the cost of a potentially exponentially more complex optimization problem to solve. When ordered by computational complexity, tighter bounds correspond to more challenging optimizations. Importantly, these bounds apply for <i>all</i> algorithms in each of these classes.</p>
+    
+<h2>2. Recoverability</h2>
+<p style="width: 80%;"> A natural question at this point might be what $H$ means in the previous table. $H$ is the <i>recoverability constant</i> of a problem and is a property of both the expert's policy and the set of moments considered. Intuitively, it tells us how many timesteps it takes the expert to correct a mistake. $H$ quantifies the difficulty of the problem and tells us how much on-policy corrections from the expert can help -- for $H$ that is $O(T)$, the expert can help very little, while for $H$ that is $O(1)$, on-policy corrections can help a lot.</p>
+<h2>3. Game-Theoretic Reductions</h2>
+    <p style="width: 80%;">So, how does one actually match moments? We formulate moment-matching as a <i>zero-sum game</i> and compute <i>equilibrium strategies</i> for the policy player against adversarially chosen divergences that attempts to distinguish between learner and expert samples. We identify two flavors of such algorithms:
+<ul style="width: 80%; margin: auto; text-align: left; list-style-type: none;">
+  <li><b>Primal</b>: Policy player follows a slow and steady <i>no-regret</i> strategy while the discriminative player best-responds to the last policy player iterate.</li>
+  <li><b>Dual</b>: Discriminative player follows a <i>no-regret</i> strategy while the policy player best-responds. </li>
+</ul>
+</p>
+<p style="width: 80%;">
+As we show in our paper, access to oracles that can perform no-regret and best-response updates allows one to match each of the three types of moments up to any $\epsilon > 0$ efficiently. One can then consult the above table to arrive at policy performance bounds depending on the class of moment that was matched. Thus, our framework gives us a family of reduction-based methods for <i>closing the imitation gap</i>.
+    </p>
+<h2>4. Practical Procedures</h2>
+    <p style="width: 80%;">One of the advantage of a reductions approach is that it allows us to plug in any no-regret-style procedure and have the performance guarantees still hold. We introduce three novel algorithms which can be seen as realizations of the above no-regret reduction:</p>
+    <ul style="width: 80%; margin: auto; text-align: left; list-style-type: none;">
+  <li><code>AdRIL</code>: A reward-moment-matching algorithm where the replay buffer can be seen as the discriminator, assigning dynamically updating rewards to samples that the learner uses to compute updates via maximum entropy RL.</li>
+      <li><code>AdVIL</code>: An off-$Q$ algorithm with the learner and discriminator taking the form of an IPM-GAN.</li>
+	    <li><code>DAeQuIL</code>: An on-$Q$ algorithm that can be seen as an extension of DAgger where, at each round, the discriminator adversarially choses a loss function, and the learner minimizes the sum of losses over the aggregated data.</li>
+</ul> <br>
+<p style="width: 80%;">We implemented all three of these algorithms in PyTorch and tested them in the PyBullet suite. <code>AdVIL</code> is competitive with the state-of-the-art, while <code>AdRIL</code> and <code>DAeQuIL</code> are able to significantly out-perform baselines on some tasks. We release our code at the link below with the hope that the community will be able to build on and refine our implementations.</p>
+   <a href="https://github.com/gkswamy98/pillbox"><i class="fa fa-github" style="font-size: 50px; padding-bottom: 10px"></i><br>[Code]</a>
+
+    <br>
+    <hr>
+
+    <h1>Paper</h1>
+    <div class="paper-thumbnail">
+        <a href="https://arxiv.org/abs/2103.03236">
+            <img class="layered-paper-big" width="100%" src="./resources/paper.svg" alt="Paper thumbnail"/>
+        </a>
+    </div>
+    <div class="paper-info">
+        <h3>Of Moments and Matching: A Game-Theoretic Framework for Closing the Imitation Gap</h3>
+        <p>Gokul Swamy, Sanjiban Choudhury, J. Andrew Bagnell, Zhiwei Steven Wu</p>
+        <p>ICML, 2021.</p>
+        <pre><code>@InProceedings{swamy2021moments,
+    title = {Of Moments and Matching: A Game-Theoretic Framework for Closing the Imitation Gap},
+    author = {Gokul Swamy and Sanjiban Choudhury and J. Andrew Bagnell and Zhiwei Steven Wu},
+    booktitle = {Proceedings of the 38th International Conference on Machine Learning},
+    year = {2021},
+}</code></pre>
+    </div>
+
+    <br>
+    <hr>
+
+    <h1>Acknowledgements</h1>
+    <p style="width: 80%;">
+        This template was originally made by <a href="http://web.mit.edu/phillipi/">Phillip Isola</a>
+        and <a href="http://richzhang.github.io/">Richard Zhang</a> for a
+        <a href="http://richzhang.github.io/colorization/">colorful</a> ECCV project, and
+        adapted to be mobile responsive by <a href="https://github.com/jasonyzhang/webpage-template">Jason Zhang</a>.
+        The code we built on can be found <a href="https://github.com/elliottwu/webpage-template">here</a>.
+    </p>
+
+    <br>
+</div>
+
+</body>
+
+</html>
