@@ -73,8 +73,7 @@
     <br>
     <p style="width: 80%;">
       <br>
-      When attempting to mimic an expert, a learner could learn by (a) rolling out their policy and comparing generated trajectories to expert trajectories, (b) producing actions on expert states and attempting to match action-conditionals, or (c) performing rollouts and attempting to match corrections provided by a queryable expert. We provide, for each of these settings, <b>bounds</b> for how well the learner can do, <b>reduction-based algorithms</b> for efficiently finding strong policies, and simple yet competitive <b>practical instantiations</b> that can scale to high-dimensional tasks.
-    </p>
+We develop algorithms for imitation learning from policy data that was corrupted by unobserved confounders. Sources of such confounding include \textit{(a)} persistent perturbations to actions or \textit{(b)} the expert responding to a part of the state that the learner does not have access to. When a confounder affects multiple timesteps of recorded data, it can manifest as spurious correlations between states and actions that a learner might latch on to, leading to poor policy performance. To break up these spurious correlations, we apply modern variants of the classical \textit{instrumental variable regression} (IVR) technique, enabling us to recover the causally correct underlying policy \textit{without} requiring access to an interactive expert. In particular, we present two techniques, one of a generative-modeling flavor (<code>DoubIL</code>) that can utilize access to a simulator and one of a game-theoretic flavor (<code>ResiduIL</code>) that can be run entirely offline. We then prove performance bounds for both algorithms, discuss how they scale with the strength of the instrument, and discuss situations where effective imitation is not possible. We find both of our algorithms compare favorably to behavioral cloning on simulated rocket landing task.    </p>
 
     <br>
     <hr>
