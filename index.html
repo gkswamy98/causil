@@ -23,7 +23,7 @@
 	<meta property="og:description" content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
     <!-- Twitter automatically scrapes this. Go to https://cards-dev.twitter.com/validator?
         if you update and want to force Twitter to re-scrape. -->
-    <meta property="twitter:card"          content="WWhen temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
+    <meta property="twitter:card"          content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
     <meta property="twitter:title"         content="Causal Imitation Learning under Temporally Correlated Noise" />
     <meta property="twitter:description"   content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,18 +70,17 @@
 
     <br><br>
 
-    <img style="width: 80%;" src="./resources/causil_ffig.svg" alt="Teaser figure."/>
+    <img style="width: 60%;" src="./resources/causil_tikz.png" alt="Teaser figure."/>
     <br>
     <p style="width: 80%;">
+      <br> When temporally correlated noise affects a pair of expert actions, it can create spurious correlations between recorded states and actions. This is because it travels through the dynamics to affect the state at the next timestep as well as affecting the next action (red path above). Standard imitation learning algorithms like behavioral cloning might latch onto these spurious correlations and learn policies that perform poorly at test-time. We leverage modern variants of the instrumental variable technique to propose two algorithms that are able to provably match expert performance under TCN.
       <br>
-      <i>(a)</i> When temporally correlated noise (e.g. wind) affects expert actions, standard imitation learning approaches like behavioral cloning can amplify this noise, leading to poor test-time performance. <i>(b)</i> TCN $u_t$ affects both the input ($s_t$) and output ($a_t$) of our learning procedure. This breaks a cardinal assumption of regression-based approaches like behavioral cloning, rendering them inconsistent. <i>(c)</i> We can re-simulate state transitions from a past state, producing fresh samples ($\widetilde{s_t}$). We can then regress from these sampled states to observed expert actions to recover the expert's policy as the noise on inputs and outputs is no longer correlated.    <br>
     <hr>
 
     <h1>Abstract</h1>
     <p style="width: 80%;">
 
-We develop algorithms for imitation learning from policy data that was corrupted by unobserved confounders. Sources of such confounding include <i>(a)</i> persistent perturbations to actions or <i>(b)</i> the expert responding to a part of the state that the learner does not have access to. When a confounder affects multiple timesteps of recorded data, it can manifest as spurious correlations between states and actions that a learner might latch onto, leading to poor policy performance. To break up these spurious correlations, we apply modern variants of the classical <i>instrumental variable regression</i> (IVR) technique, enabling us to recover the causally correct underlying policy <i>without</i> requiring access to an interactive expert. In particular, we present two techniques, one of a generative-modeling flavor (<code>DoubIL</code>) that can utilize access to a simulator and one of a game-theoretic flavor (<code>ResiduIL</code>) that can be run entirely offline. We discuss, from the perspective of performance, the types of confounding under which it is better to use an IVR-based technique instead of behavioral cloning and vice versa. We find both of our algorithms compare favorably to behavioral cloning on a simulated rocket landing task.    </p>
-
+        We develop algorithms for imitation learning from policy data that was corrupted by temporally correlated noise in expert actions. When noise affects multiple timesteps of recorded data, it can manifest as spurious correlations between states and actions that a learner might latch on to, leading to poor policy performance. To break up these spurious correlations, we apply modern variants of the <i>instrumental variable regression</i> (IVR) technique of econometrics, enabling us to recover the underlying policy <i>without</i> requiring access to an interactive expert. In particular, we present two techniques, one of a generative-modeling flavor (<code>DoubIL</code>) that can utilize access to a simulator, and one of a game-theoretic flavor (<code>ResiduIL</code>) that can be run entirely offline. We find both of our algorithms compare favorably to behavioral cloning on simulated control tasks.
     <br>
     <hr>
 
