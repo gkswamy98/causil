@@ -65,22 +65,22 @@
     <br><br>
 
     <div class="links"><a href="https://arxiv.org/pdf/2202.01312.pdf"><i class="fa fa-file-text", style="font-size: 50px; padding-bottom: 10px"></i><br>[Paper]</a></div>
-    <div class="links"><a href="https://www.youtube.com/watch?v=FPyL9vMGpFE"><i class="fa fa-play-circle" style="font-size: 50px; padding-bottom: 10px"></i><br>[Videos]</a></div>
+    <div class="links"><a href="https://www.youtube.com/watch?v=FPyL9vMGpFE"><i class="fa fa-play-circle" style="font-size: 50px; padding-bottom: 10px"></i><br>[Video]</a></div>
     <div class="links"><a href="https://github.com/gkswamy98/causal_il"><i class="fa fa-github" style="font-size: 50px; padding-bottom: 10px"></i><br>[Code]</a></div>
 
     <br><br>
 
-    <img style="width: 60%;" src="./resources/causil_tikz.png" alt="Teaser figure."/>
+    <img style="width: 45%;" src="./resources/causil_tikz.png" alt="Teaser figure."/>
     <br>
     <p style="width: 80%;">
       <br> When temporally correlated noise affects a pair of expert actions, it can create spurious correlations between recorded states and actions. This is because it travels through the dynamics to affect the state at the next timestep as well as affecting the next action (red path above). Standard imitation learning algorithms like behavioral cloning might latch onto these spurious correlations and learn policies that perform poorly at test-time. We leverage modern variants of the instrumental variable technique to propose two algorithms that are able to provably match expert performance under TCN.
-      <br>
+    </p>
     <hr>
 
     <h1>Abstract</h1>
     <p style="width: 80%;">
-
         We develop algorithms for imitation learning from policy data that was corrupted by temporally correlated noise in expert actions. When noise affects multiple timesteps of recorded data, it can manifest as spurious correlations between states and actions that a learner might latch on to, leading to poor policy performance. To break up these spurious correlations, we apply modern variants of the <i>instrumental variable regression</i> (IVR) technique of econometrics, enabling us to recover the underlying policy <i>without</i> requiring access to an interactive expert. In particular, we present two techniques, one of a generative-modeling flavor (<code>DoubIL</code>) that can utilize access to a simulator, and one of a game-theoretic flavor (<code>ResiduIL</code>) that can be run entirely offline. We find both of our algorithms compare favorably to behavioral cloning on simulated control tasks.
+    </p>
     <br>
     <hr>
 
@@ -92,6 +92,11 @@
     </div>
     <br>
 
+    <hr>
+
+    <h1>Key Insights</h1>
+
+    <h2>Coming soon!</h2>
     <hr>
 
     <h1>Paper</h1>
