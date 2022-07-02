@@ -101,7 +101,7 @@
 
     <h2>2. Instrumental Variable Regression</h2>
     <p style="width: 80%;">While a queryable expert would be able to give us action labels that are not affected by TCN, this is not a realistic assumption for many domains. We instead focus on learning from <i>observational</i> data in the form of collected expert demonstrations. We build upon a technique from econometrics known as <i>instrumental variable regression</i> to denoise the inputs to our regression procedure. To do this, one conditions on an <i>instrument</i> $Z$: a source of random variation independent of the confounder (the shared noise between $X$ and $Y$). Graphically,</p>
-    <img style="width: 25%;" src="./resources/ivr.png" alt="IVR."/>
+    <img style="width: 22%;" src="./resources/ivr.png" alt="IVR."/>
     <p style="width: 80%;"> Mathematically, instead of regressing from $X \rightarrow Y$, one regresses from $X|Z \rightarrow Y|Z$. We present a unified deriviation of modern IVR techniques and derive performance bounds for them in our paper.</p>
 
     <h2>3. Two Algorithms for Imitation under TCN</h2>
