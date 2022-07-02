@@ -20,12 +20,12 @@
     <!-- Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/
         if you update and want to force Facebook to re-scrape. -->
 	<meta property="og:title" content="Causal Imitation Learning under Temporally Correlated Noise" />
-	<meta property="og:description" content="We focus in imitation learning in the presence of temporally correlated perturbations (exogenous noise, (a)) or not having access to the full state (endogenous noise, (b)). We formalize both in a graphical model (c) that allows us to leverage a technique known as instrumental variable regression to find a policy that isn't corrupted by spurious correlations introduced by the confounder." />
+	<meta property="og:description" content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
     <!-- Twitter automatically scrapes this. Go to https://cards-dev.twitter.com/validator?
         if you update and want to force Twitter to re-scrape. -->
-    <meta property="twitter:card"          content="We focus in imitation learning in the presence of temporally correlated perturbations (exogenous noise, (a)) or not having access to the full state (endogenous noise, (b)). We formalize both in a graphical model (c) that allows us to leverage a technique known as instrumental variable regression to find a policy that isn't corrupted by spurious correlations introduced by the confounder." />
+    <meta property="twitter:card"          content="WWhen temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
     <meta property="twitter:title"         content="Causal Imitation Learning under Temporally Correlated Noise" />
-    <meta property="twitter:description"   content="We focus in imitation learning in the presence of temporally correlated perturbations (exogenous noise, (a)) or not having access to the full state (endogenous noise, (b)). We formalize both in a graphical model (c) that allows us to leverage a technique known as instrumental variable regression to find a policy that isn't corrupted by spurious correlations introduced by the confounder." />
+    <meta property="twitter:description"   content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
@@ -70,12 +70,11 @@
 
     <br><br>
 
-    <img style="width: 60%;" src="./resources/causil_ffig.svg" alt="Teaser figure."/>
+    <img style="width: 80%;" src="./resources/causil_ffig.svg" alt="Teaser figure."/>
     <br>
     <p style="width: 80%;">
       <br>
-  We focus in imitation learning in the presence of temporally correlated perturbations (exogenous noise, <i>(a)</i>) or not having access to the full state (endogenous noise, <i>(b)</i>). We formalize both in a graphical model <i>(c)</i> that allows us to leverage a technique known as <i>instrumental variable regression</i> to find a policy that isn't corrupted by spurious correlations introduced by the confounder.
-    <br>
+      <i>(a)</i> When temporally correlated noise (e.g. wind) affects expert actions, standard imitation learning approaches like behavioral cloning can amplify this noise, leading to poor test-time performance. <i>(b)</i> TCN $u_t$ affects both the input ($s_t$) and output ($a_t$) of our learning procedure. This breaks a cardinal assumption of regression-based approaches like behavioral cloning, rendering them inconsistent. <i>(c)</i> We can re-simulate state transitions from a past state, producing fresh samples ($\widetilde{s_t}$). We can then regress from these sampled states to observed expert actions to recover the expert's policy as the noise on inputs and outputs is no longer correlated.    <br>
     <hr>
 
     <h1>Abstract</h1>
